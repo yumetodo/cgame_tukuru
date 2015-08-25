@@ -1,6 +1,9 @@
 ﻿#include <windows.h>
 
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);// ウィンドウプロシージャ
+
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);       // ウィンドウプロシージャ
+
+void GameMain(void); // ゲームメイン処理
 
 
 //==============================================================================================
@@ -25,30 +28,26 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// ウィンドウの作成
 	HWND hWnd = CreateWindow(
-		wc.lpszClassName,                   // ウィンドウクラス名
-		TEXT("タイトル"),                   // ウィンドウタイトル
-		WS_OVERLAPPEDWINDOW,                // ウィンドウスタイル
-		CW_USEDEFAULT,                      // 表示X座標
-		CW_USEDEFAULT,                      // 表示Y座標
-		CW_USEDEFAULT,                      // 幅
-		CW_USEDEFAULT,                      // 高さ
-		NULL,                               // 親ウィンドウ
-		NULL,                               // ウィンドウメニュー
-		hInstance,                          // インスタンスハンドル
-		NULL);                              // WM_CREATE情報
+		wc.lpszClassName,       // ウィンドウクラス名
+		TEXT("タイトル"),       // ウィンドウタイトル
+		WS_OVERLAPPEDWINDOW,    // ウィンドウスタイル
+		CW_USEDEFAULT,          // 表示X座標
+		CW_USEDEFAULT,          // 表示Y座標
+		CW_USEDEFAULT,          // 幅
+		CW_USEDEFAULT,          // 高さ
+		NULL,                   // 親ウィンドウ
+		NULL,                   // ウィンドウメニュー
+		hInstance,              // インスタンスハンドル
+		NULL);                  // WM_CREATE情報
 
-											// ウィンドウの表示
-	ShowWindow(hWnd, nCmdShow);             // 表示状態の設定
-	UpdateWindow(hWnd);                     // クライアント領域の更新
+								// ウィンドウの表示
+	ShowWindow(hWnd, nCmdShow); // 表示状態の設定
+	UpdateWindow(hWnd);         // クライアント領域の更新
 
-											// メッセージループ
-	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0)) {
-		TranslateMessage(&msg);             // 仮想キーメッセージの変換
-		DispatchMessage(&msg);              // ウィンドウプロシージャへ転送
-	}
+								// ゲームメイン処理へ～
+	GameMain();
 
-	return msg.wParam;
+	return 0; // とりあえず0を返す
 }
 
 //==============================================================================================
@@ -64,5 +63,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 	default:                                            // デフォルト処理
 		return DefWindowProc(hWnd, msg, wParam, lParam);
+	}
+}
+
+//==============================================================================================
+// ゲームメイン処理
+//==============================================================================================
+void GameMain(void) {
+
+	MSG msg;
+
+	// メインループ
+	while (1) {
+
+		// メッセージ処理
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) { //メッセージが来たら
+			if (msg.message != WM_QUIT) { // 終了メッセージでなければ
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+			else {
+				break; // 終了メッセージが来たら脱出。
+			}
+		}
+
+		//～ ゲーム処理いろいろ ～
+
 	}
 }
