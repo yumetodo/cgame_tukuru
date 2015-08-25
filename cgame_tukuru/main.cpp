@@ -1,11 +1,35 @@
 ﻿#include <windows.h>
-
+#include <mmsystem.h> // timeGetTime()のため
+#ifdef _MSC_VER
+#pragma comment(lib, "winmm.lib")
+#endif
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);       // ウィンドウプロシージャ
 
 void GameMain(void); // ゲームメイン処理
+void Wait(DWORD); // ウェイト
 
 
+constexpr DWORD FPS = 60; // FPS設定
+BOOL EndFlag = FALSE; // 終了フラグ
+
+//==============================================================================================
+// ウェイト
+//==============================================================================================
+void Wait(DWORD wait_time) {
+	MSG msg;
+	DWORD start_time = timeGetTime();
+
+	do {
+		// メッセージ処理
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		if (wait_time > 0) Sleep(1); // ちょっと休憩（CPUの占有率を下げるため）
+	} while (timeGetTime() < wait_time + start_time); // wait_time だけ回る
+}
 //==============================================================================================
 // Windows メイン処理
 //==============================================================================================
@@ -57,8 +81,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 	switch (msg) {
 	case WM_DESTROY:                                    // ウィンドウが破棄されたときの処理
-														// 終了メッセージ
-		PostQuitMessage(0);
+		PostQuitMessage(0);// 終了メッセージ
+		EndFlag = TRUE; // 終了フラグをあげる。
 		return 0;
 
 	default:                                            // デフォルト処理
@@ -71,23 +95,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 //==============================================================================================
 void GameMain(void) {
 
-	MSG msg;
 
-	// メインループ
-	while (1) {
-
-		// メッセージ処理
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) { //メッセージが来たら
-			if (msg.message != WM_QUIT) { // 終了メッセージでなければ
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
-			else {
-				break; // 終了メッセージが来たら脱出。
-			}
-		}
+	//メインループ
+	while (!EndFlag) {
+		const DWORD StartTime = timeGetTime();
 
 		//～ ゲーム処理いろいろ ～
 
+		const DWORD PassTime = timeGetTime() - StartTime; // 経過時間の計算
+		(1000 / FPS > PassTime) ? Wait(1000 / FPS - PassTime) : Wait(0); // 待つ。
 	}
 }
