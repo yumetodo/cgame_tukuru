@@ -8,10 +8,12 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);       // ウィンドウ�
 
 void GameMain(void); // ゲームメイン処理
 void Wait(DWORD); // ウェイト
+void FPSCount(DWORD*); // FPS計測
 
 
 constexpr DWORD FPS = 60; // FPS設定
 BOOL EndFlag = FALSE; // 終了フラグ
+DWORD fps; // FPS計測値
 
 //==============================================================================================
 // ウェイト
@@ -29,6 +31,23 @@ void Wait(DWORD wait_time) {
 
 		if (wait_time > 0) Sleep(1); // ちょっと休憩（CPUの占有率を下げるため）
 	} while (timeGetTime() < wait_time + start_time); // wait_time だけ回る
+}
+//==============================================================================================
+// FPS の計測
+//==============================================================================================
+void FPSCount(DWORD *fps) {
+	static DWORD before_time = timeGetTime(); // 以前の時間
+	DWORD        now_time = timeGetTime(); // 現在の時間
+	static DWORD fps_ctr = 0;
+
+	if (now_time - before_time >= 1000) {
+		// 初期化
+		before_time = now_time;
+		*fps = fps_ctr;
+		fps_ctr = 0;
+	}
+
+	fps_ctr++;
 }
 //==============================================================================================
 // Windows メイン処理
@@ -95,6 +114,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 //==============================================================================================
 void GameMain(void) {
 
+	TIMECAPS Caps;
+
+	timeGetDevCaps(&Caps, sizeof(TIMECAPS)); // 性能取得
+	timeBeginPeriod(Caps.wPeriodMin); // 設定
 
 	//メインループ
 	while (!EndFlag) {
@@ -104,5 +127,7 @@ void GameMain(void) {
 
 		const DWORD PassTime = timeGetTime() - StartTime; // 経過時間の計算
 		(1000 / FPS > PassTime) ? Wait(1000 / FPS - PassTime) : Wait(0); // 待つ。
+		FPSCount(&fps); // FPS の計測
 	}
+	timeEndPeriod(Caps.wPeriodMin); // 後処理
 }
