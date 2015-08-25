@@ -12,6 +12,7 @@ void FPSCount(DWORD*); // FPS計測
 
 
 constexpr DWORD FPS = 60; // FPS設定
+constexpr int pWid = 640, pHei = 480; //幅・高さ
 BOOL EndFlag = FALSE; // 終了フラグ
 DWORD fps; // FPS計測値
 
@@ -62,7 +63,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.cbClsExtra = 0;                                   // 補助領域サイズ
 	wc.cbWndExtra = 0;                                   // 補助領域サイズ
 	wc.hInstance = hInstance;                           // インスタンスハンドル
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);     // アイコン
+	wc.hIcon = LoadIcon(hInstance, TEXT("IDI_ICON"));     // アイコン
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);         // マウスカーソル
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);          // クライアント領域背景色
 	wc.lpszMenuName = NULL;                                // ウィンドウメニュー
@@ -73,11 +74,11 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HWND hWnd = CreateWindow(
 		wc.lpszClassName,       // ウィンドウクラス名
 		TEXT("タイトル"),       // ウィンドウタイトル
-		WS_OVERLAPPEDWINDOW,    // ウィンドウスタイル
+		WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX,        // ウィンドウスタイル
 		CW_USEDEFAULT,          // 表示X座標
 		CW_USEDEFAULT,          // 表示Y座標
-		CW_USEDEFAULT,          // 幅
-		CW_USEDEFAULT,          // 高さ
+		pWid + GetSystemMetrics(SM_CXDLGFRAME) * 2,         // 幅
+		pHei + GetSystemMetrics(SM_CYDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),    // 高さ
 		NULL,                   // 親ウィンドウ
 		NULL,                   // ウィンドウメニュー
 		hInstance,              // インスタンスハンドル
