@@ -24,4 +24,23 @@
       <Filter>リソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="sample.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="transparent_back.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="transparent_mask.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="transparent_org.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="wheel.bmp">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

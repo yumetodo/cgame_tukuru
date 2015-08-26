@@ -151,6 +151,15 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="sample.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="wheel.bmp" />
+    <Image Include="transparent_back.bmp" />
+    <Image Include="transparent_mask.bmp" />
+    <Image Include="transparent_org.bmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

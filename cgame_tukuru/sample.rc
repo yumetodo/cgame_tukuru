@@ -1,8 +1,9 @@
 #include "resource.h"
 
 // アイコン
-IDI_ICON ICON DISCARDABLE "sample.ico"
+//IDI_ICON ICON DISCARDABLE "sample.ico"
 
 // ビットマップ
-IDB_CHARA BITMAP DISCARDABLE "chara.bmp"
-IDB_MAP   BITMAP DISCARDABLE "map.bmp"
+IDB_ORG   BITMAP DISCARDABLE "transparent_org.bmp"
+IDB_BLOCK BITMAP DISCARDABLE "transparent_back.bmp"
+IDB_MASK  BITMAP DISCARDABLE "transparent_mask.bmp"

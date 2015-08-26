@@ -1,0 +1,16 @@
+【MIDI】ロウきゅーぶ！OP、SHOOT!を耳コピしてみた。(修正版)
+http://www.nicovideo.jp/watch/sm21123374
+の修正版のMIDIです。
+高音質MP3版はこっちにうｐしました↓
+https://soundcloud.com/himadari/shoot_130628
+
+
+Cubaseで作成していて16トラック以上になってしまうため一部のトラックはまとめました。
+MIDIの方は書き出してからあまり手を付けてないのでしょぼいと思います。
+MSGSだと同時発音数のせいか音が途切れることがありますがご了承ください。
+
+
+ちなみにMP3版で使った音源は
+・Synth1
+・SuperRiff Guitar
+です。
